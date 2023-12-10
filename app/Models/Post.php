@@ -53,6 +53,11 @@ class Post extends Model
         return $this->belongsToMany(Category::class);
     }
 
+    public function likes(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'post_like', 'post_id', 'user_id')->withTimestamps();
+    }
+
     public function publishedDiffForHumans()
     {
         return $this->published_at->diffForHumans();
