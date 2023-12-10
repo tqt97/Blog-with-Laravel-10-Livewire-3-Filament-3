@@ -24,7 +24,7 @@ class Post extends Model
 
     public function scopePublished($query)
     {
-        return $query->where('published_at', '<=', Carbon::now());
+        return $query->whereNotNull('published_at');
     }
 
     public function scopeFeatured($query)
