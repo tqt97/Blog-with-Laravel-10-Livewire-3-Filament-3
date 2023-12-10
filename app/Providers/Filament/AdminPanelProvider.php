@@ -9,6 +9,7 @@ use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
+use Filament\Support\Enums\MaxWidth;
 use Filament\Widgets;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
@@ -56,6 +57,23 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-            ]);
+            ])
+            ->globalSearchKeyBindings(['command+k', 'ctrl+k'])
+            ->maxContentWidth(MaxWidth::Full)
+//            ->navigationGroups([
+//                NavigationGroup::make()
+//                    ->label('Shop')
+//                    ->icon('heroicon-o-shopping-cart'),
+//                NavigationGroup::make()
+//                    ->label('Blog')
+//                    ->icon('heroicon-o-cog-6-tooth')
+//                    ->collapsed(),
+//                NavigationGroup::make()
+//                    ->label(fn(): string => __('navigation.settings'))
+//                    ->icon('heroicon-o-cog-6-tooth')
+//                    ->collapsed(),
+//            ])
+            ->sidebarCollapsibleOnDesktop()
+            ->sidebarFullyCollapsibleOnDesktop();
     }
 }
