@@ -85,11 +85,30 @@ class PostResource extends Resource
                                     ->image()
                                     ->required(),
                                 Forms\Components\Select::make('categories')
+                                    ->label('Categories')
                                     ->relationship('categories', 'title')
                                     ->preload()
                                     ->multiple()
                                     ->searchable()
-                                    ->required(),
+                                    ->required()
+                                    ->createOptionForm([
+                                        Forms\Components\TextInput::make('title')
+                                            ->live(onBlur: true, debounce: 500)
+                                            ->required()
+                                            ->minLength(1)
+                                            ->maxLength(150)
+                                            ->afterStateUpdated(function (string $operation, ?string $state, Set $set) {
+                                                $set('slug', Str::slug($state));
+                                            }),
+                                        Forms\Components\TextInput::make('slug')
+                                            ->required()
+                                            ->minLength(1)
+                                            ->maxLength(255)
+                                            ->unique(ignoreRecord: true),
+                                        Forms\Components\colorPicker::make('text_color'),
+                                        Forms\Components\colorPicker::make('bg_color'),
+                                    ])
+                                ,
                                 Forms\Components\Select::make('user_id')->label('Author')
                                     ->relationship('user', 'name')
                                     ->preload()
@@ -221,7 +240,7 @@ class PostResource extends Resource
     public static function getRelations(): array
     {
         return [
-            RelationManagers\CategoriesRelationManager::class,
+//            RelationManagers\CategoriesRelationManager::class,
         ];
     }
 
