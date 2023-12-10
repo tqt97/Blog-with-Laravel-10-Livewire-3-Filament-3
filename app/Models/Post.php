@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -21,20 +21,26 @@ class Post extends Model
         'published_at' => 'datetime',
     ];
 
-
-    public function scopePublished($query)
+    public function scopePublished($query): void
     {
-        return $query->whereNotNull('published_at');
+        $query->whereNotNull('published_at');
     }
 
-    public function scopeFeatured($query)
+    public function scopeFeatured(Builder $query): void
     {
-        return $query->where('featured', true);
+        $query->where('featured', true);
     }
 
-    public function scopeSearch($query, $search)
+    public function scopeWithSearch(Builder $query, $search): void
     {
-        return $query->where('title', 'like', '%' . $search . '%');
+        $query->where('title', 'like', '%' . $search . '%');
+    }
+
+    public function scopeWithCategory(Builder $query, string $category): void
+    {
+        $query->whereHas('categories', function ($q) use ($category) {
+            $q->where('slug', $category);
+        });
     }
 
     public function user(): BelongsTo
@@ -87,7 +93,8 @@ class Post extends Model
         return Str::limit(strip_tags($this->body), 100, '...');
     }
 
-    public function getThumbnail(): string{
+    public function getThumbnail(): string
+    {
         $isUrl = str_contains($this->image, 'http://') || str_contains($this->image, 'https://');
 //        return $this->thumbnail ? asset('storage/' . $this->thumbnail) : asset('img/default.png');
         return $isUrl ? $this->image : asset('storage/' . $this->image);

@@ -1,25 +1,28 @@
 @props(['post'])
 
-<div>
+<div {{$attributes}}>
     <a href="http://127.0.0.1:8000/blog/laravel-34">
         <div>
             <img class="w-full rounded-xl" src="{{ $post->getThumbnail() }}" alt="{{ $post->title }}">
         </div>
     </a>
     <div class="mt-3">
-        <div class="flex items-center mb-2">
+        <div class="flex items-center mb-2 gap-x-2">
             @foreach($post->categories as $category)
-                <a href="http://127.0.0.1:8000/categories/{{ $category->slug }}"
-                   class="bg-red-600 text-white rounded-xl px-3 py-1 text-sm mr-3">
+                <x-badges.category-sidebar
+                    wire:navigate
+                    href="{{route('posts.index', ['category' => $category->slug])}}"
+                    :textColor="$category->text_color"
+                    :bgColor="$category->bg_color">
                     {{ $category->title }}
-                </a>
+                </x-badges.category-sidebar>
             @endforeach
         </div>
         <div class="flex items-center mb-2">
             <p class="text-gray-500 font-semibold text-sm flex items-center">
-                         {{ $post->created_at->format('M d, Y') }} | {{ $post->time_to_read }}
+                {{ $post->created_at->format('M d, Y') }} | {{ $post->time_to_read }}
             </p>
-                   </div>
+        </div>
         <a class="text-xl font-bold text-gray-900">{{ $post->title }}</a>
 
     </div>
