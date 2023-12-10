@@ -86,4 +86,10 @@ class Post extends Model
     {
         return Str::limit(strip_tags($this->body), 100, '...');
     }
+
+    public function getThumbnail(): string{
+        $isUrl = str_contains($this->image, 'http://') || str_contains($this->image, 'https://');
+//        return $this->thumbnail ? asset('storage/' . $this->thumbnail) : asset('img/default.png');
+        return $isUrl ? $this->image : asset('storage/' . $this->image);
+    }
 }

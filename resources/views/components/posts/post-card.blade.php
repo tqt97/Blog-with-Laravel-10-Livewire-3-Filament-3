@@ -3,7 +3,7 @@
 <div>
     <a href="http://127.0.0.1:8000/blog/laravel-34">
         <div>
-            <img class="w-full rounded-xl" src="{{ asset('storage/'.$post->image) }}" alt="{{ $post->title }}">
+            <img class="w-full rounded-xl" src="{{ $post->getThumbnail() }}" alt="{{ $post->title }}">
         </div>
     </a>
     <div class="mt-3">
