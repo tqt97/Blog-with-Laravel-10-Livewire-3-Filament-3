@@ -92,7 +92,7 @@ class PostResource extends Resource
                                     ->searchable()
                                     ->required()
                                     ->createOptionForm([
-                                        Forms\Components\TextInput::make('title')
+                                        Forms\Components\TextInput::make('name')
                                             ->live(onBlur: true, debounce: 500)
                                             ->required()
                                             ->minLength(1)

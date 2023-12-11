@@ -2,20 +2,17 @@
 <article class="[&:not(:last-child)]:border-b border-gray-100 pb-10">
     <div class="article-body grid grid-cols-12 gap-3 mt-5 items-start">
         <div class="article-thumbnail col-span-4 flex items-center">
-            <a href="">
-                <img class="mw-100 mx-auto rounded-xl" src="{{ $post->getThumbnail() }}" alt="{{ $post->title
-                }}">
+            <a wire:navigate href="{{ route('posts.show', $post) }}">
+                <img class="mw-100 mx-auto rounded-xl" src="{{ $post->getThumbnail() }}" alt="{{ $post->title }}">
             </a>
         </div>
         <div class="col-span-8">
             <div class="article-meta flex py-1 text-sm items-center">
-                <img class="w-7 h-7 rounded-full mr-3" src="{{ $post->user->profile_photo_url }}"
-                     alt="{{ $post->user->name }}">
-                <span class="mr-1 text-xs">{{ $post->user->name }}</span>
+                <x-posts.author :author="$post->user" size="sm"/>
                 <span class="text-gray-500 text-xs">{{ $post->publishedDiffForHumans() }}</span>
             </div>
             <h2 class="text-xl font-bold text-gray-900">
-                <a href="http://127.0.0.1:8000/blog/first%20post">
+                <a wire:navigate href="{{ route('posts.show', $post) }}">
                     {{ $post->title }}
                 </a>
             </h2>
@@ -27,13 +24,7 @@
                 <div class="flex items-center space-x-4">
                     <div class="flex gap-x-2">
                         @foreach ($post->categories as $category)
-                            <x-badges.category-sidebar
-                                wire:navigate
-                                href="{{route('posts.index', ['category' => $category->slug])}}"
-                                :textColor="$category->text_color"
-                                :bgColor="$category->bg_color">
-                                {{ $category->name }}
-                            </x-badges.category-sidebar>
+                            <x-posts.category-badge :category="$category" />
                         @endforeach
                         <div class="flex items-center space-x-4">
                             <span class="text-gray-500 text-sm">{{ $post->time_to_read }}</span>
