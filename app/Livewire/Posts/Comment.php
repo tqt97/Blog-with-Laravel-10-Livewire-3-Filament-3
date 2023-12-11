@@ -22,7 +22,7 @@ class Comment extends Component
         if(auth()->guest()) {
             return redirect()->route('login');
         }
-        
+
         $this->validateOnly('comment');
 
         $this->post->comments()->create([
