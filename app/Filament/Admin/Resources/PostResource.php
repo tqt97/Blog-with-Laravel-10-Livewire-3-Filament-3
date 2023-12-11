@@ -86,7 +86,7 @@ class PostResource extends Resource
                                     ->required(),
                                 Forms\Components\Select::make('categories')
                                     ->label('Categories')
-                                    ->relationship('categories', 'title')
+                                    ->relationship('categories', 'name')
                                     ->preload()
                                     ->multiple()
                                     ->searchable()
@@ -150,7 +150,7 @@ class PostResource extends Resource
 //                    ->copyableState(fn (Post $record): string => "URL: {$record->url}")
 //                    ->description(fn(Post $record): string => Str::words($record->body, 5), position: 'below')
                 ,
-                Tables\Columns\TextColumn::make('categories.title')
+                Tables\Columns\TextColumn::make('categories.name')
 //                    ->listWithLineBreaks()
 //                    ->bulleted()
 //                    ->searchable()

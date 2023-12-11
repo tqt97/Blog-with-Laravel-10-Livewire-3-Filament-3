@@ -18,7 +18,7 @@ class CategoriesRelationManager extends RelationManager
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('title')
+                Forms\Components\TextInput::make('name')
                     ->live(debounce: 500)
                     ->required()
                     ->minLength(1)

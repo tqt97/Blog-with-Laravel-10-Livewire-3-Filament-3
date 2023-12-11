@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -16,9 +18,14 @@ class CategoryFactory extends Factory
      */
     public function definition(): array
     {
+        $name = $this->faker->words(2, true);
+        $text_color = ['gray', 'red', 'yellow', 'green', 'blue', 'indigo', 'purple', 'pink'];
+        $bg_color = ['gray', 'red', 'yellow', 'green', 'blue', 'indigo', 'purple', 'pink'];
         return [
-            'title' => $this->faker->sentence(),
-            'slug' => $this->faker->slug(3),
+            'name' => $name,
+            'slug' => Str::slug($name),
+            'text_color' => Arr::random($text_color),
+            'bg_color' => Arr::random($bg_color),
         ];
     }
 }

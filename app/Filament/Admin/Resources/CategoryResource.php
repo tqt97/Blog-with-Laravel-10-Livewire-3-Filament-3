@@ -34,7 +34,7 @@ class CategoryResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('title')
+                Forms\Components\TextInput::make('name')
                     ->live(onBlur: true, debounce: 500)
                     ->required()
                     ->minLength(1)
@@ -56,7 +56,7 @@ class CategoryResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('title')
+                Tables\Columns\TextColumn::make('name')
                     ->searchable()->sortable(),
 //                Tables\Columns\TextColumn::make('slug')
 //                    ->searchable()->sortable(),
