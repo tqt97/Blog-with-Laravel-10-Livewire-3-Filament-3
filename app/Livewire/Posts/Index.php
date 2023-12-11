@@ -32,7 +32,7 @@ class Index extends Component
     }
 
     #[On('search')]
-    public function updateSearch($search)
+    public function updateSearch($search): void
     {
         $this->search = $search;
         $this->resetPage();
@@ -52,12 +52,8 @@ class Index extends Component
     {
         return Post::published()
             ->with('user', 'categories')
-            ->when($this->activeCategory, function ($q) {
-                $q->withCategory($this->category);
-            })
-            ->when($this->popular, function ($q) {
-                $q->popular();
-            })
+            ->when($this->activeCategory, fn($q) => $q->withCategory($this->category))
+            ->when($this->popular, fn($q) => $q->popular())
             ->search($this->search)
             ->orderBy('published_at', $this->sort)
             ->paginate(5);
