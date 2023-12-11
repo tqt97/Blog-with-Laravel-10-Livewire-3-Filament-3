@@ -29,7 +29,7 @@ class Index extends Component
     }
 
     #[On('search')]
-    public function updateSearch($search): void
+    public function updateSearch($search)
     {
         $this->search = $search;
         $this->resetPage();
