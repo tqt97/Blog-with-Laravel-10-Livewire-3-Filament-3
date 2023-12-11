@@ -1,4 +1,4 @@
-<div id="posts" class=" px-3 lg:px-7 py-6">
+<div class="px-3 lg:px-7 py-6">
     <div class="flex justify-between items-center border-b border-gray-100">
         <div class="text-gray-600">
             @if ($this->activeCategory || $search)
@@ -17,7 +17,9 @@
                 </span>
             @endif
         </div>
-        <div id="filter-selector" class="flex items-center space-x-4 font-light ">
+        <div class="flex items-center space-x-4 font-light">
+            <x-checkbox wire:model.live="popular" />
+            <x-label>{{ __('Popular') }}</x-label>
             <button class="{{ $sort === 'desc' ? 'text-gray-900 border-b border-gray-700' : 'text-gray-500' }} py-4"
                 wire:click="setSort('desc')">
                 Latest
@@ -28,16 +30,16 @@
             </button>
         </div>
     </div>
-    <div class="py-4" wire:loading.class="opacity-10">
+    <div class="py-4">
         @forelse($this->posts as $post)
-            <x-posts.post :post="$post" />
+            <x-posts.post wire:key="{{ $post->id }}" :post="$post" />
         @empty
-            <h1>{{ count($this->posts) }} post here</h1>
+            <h1>{{ __('No posts found') }}</h1>
         @endforelse
 
         <div class="my-3">
             @if (count($this->posts))
-                {{ $this->posts->onEachSide(3)->links() }}
+                {{ $this->posts->onEachSide(1)->links() }}
             @endif
         </div>
     </div>

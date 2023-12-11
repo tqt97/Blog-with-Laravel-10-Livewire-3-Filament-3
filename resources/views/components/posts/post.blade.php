@@ -1,18 +1,19 @@
 @props(['post'])
-<article class="[&:not(:last-child)]:border-b border-gray-100 pb-10">
+
+<article {{ $attributes->merge(['class' => '[&:not(:last-child)]:border-b border-gray-100 pb-10']) }}>
     <div class="article-body grid grid-cols-12 gap-3 mt-5 items-start">
         <div class="article-thumbnail col-span-4 flex items-center">
-            <a wire:navigate href="{{ route('posts.show', $post) }}">
+            <a wire:navigate href="{{ route('posts.show', $post->slug) }}">
                 <img class="mw-100 mx-auto rounded-xl" src="{{ $post->getThumbnail() }}" alt="{{ $post->title }}">
             </a>
         </div>
         <div class="col-span-8">
             <div class="article-meta flex py-1 text-sm items-center">
-                <x-posts.author :author="$post->user" size="sm"/>
+                <x-posts.author :author="$post->user" size="sm" />
                 <span class="text-gray-500 text-xs">{{ $post->publishedDiffForHumans() }}</span>
             </div>
             <h2 class="text-xl font-bold text-gray-900">
-                <a wire:navigate href="{{ route('posts.show', $post) }}">
+                <a wire:navigate href="{{ route('posts.show', $post->slug) }}">
                     {{ $post->title }}
                 </a>
             </h2>
@@ -33,7 +34,7 @@
 
                 </div>
                 <div>
-                    <livewire:like.button :key="$post->id" :$post />
+                    <livewire:like.button :key="'post-likeButton-' . $post->id" :$post />
                 </div>
             </div>
         </div>

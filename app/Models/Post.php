@@ -22,28 +22,6 @@ class Post extends Model
         'published_at' => 'datetime',
     ];
 
-    public function scopePublished($query): void
-    {
-        $query->whereNotNull('published_at');
-    }
-
-    public function scopeFeatured(Builder $query): void
-    {
-        $query->where('featured', true);
-    }
-
-    public function scopeWithSearch(Builder $query, $search): void
-    {
-        $query->where('title', 'like', '%' . $search . '%');
-    }
-
-    public function scopeWithCategory(Builder $query, string $category): void
-    {
-        $query->whereHas('categories', function ($q) use ($category) {
-            $q->where('slug', $category);
-        });
-    }
-
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
@@ -61,7 +39,35 @@ class Post extends Model
 
     public function likes(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'post_like', 'post_id', 'user_id')->withTimestamps();
+        return $this->belongsToMany(User::class, 'post_like')->withTimestamps();
+    }
+
+    public function scopePublished(Builder $query): void
+    {
+        // $query->whereNotNull('published_at');
+        $query->where('published_at', '<=', now());
+    }
+
+    public function scopeFeatured(Builder $query): void
+    {
+        $query->where('featured', true);
+    }
+
+    public function scopeSearch(Builder $query, string $search = ''): void
+    {
+        $query->where('title', 'like', '%' . $search . '%');
+    }
+
+    public function scopePopular(Builder $query): void
+    {
+        $query->withCount('likes')->orderBy('likes_count', 'desc');
+    }
+
+    public function scopeWithCategory(Builder $query, string $category): void
+    {
+        $query->whereHas('categories', function ($q) use ($category) {
+            $q->where('slug', $category);
+        });
     }
 
     public function publishedDiffForHumans()

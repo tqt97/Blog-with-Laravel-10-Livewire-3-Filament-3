@@ -23,6 +23,9 @@ class Index extends Component
     #[Url()]
     public string $category = '';
 
+    #[Url()]
+    public bool $popular = false;
+
     public function setSort(string $sort): void
     {
         $this->sort = ($sort === 'desc') ? 'desc' : 'asc';
@@ -39,6 +42,8 @@ class Index extends Component
     {
         $this->search = '';
         $this->category = '';
+        $this->popular = false;
+        $this->sort = 'desc';
         $this->resetPage();
     }
 
@@ -46,16 +51,22 @@ class Index extends Component
     public function posts()
     {
         return Post::published()
-            ->when($this->activeCategory, fn($q) => $q->withCategory($this->category))
+            ->with('user', 'categories')
+            ->when($this->activeCategory, function ($q) {
+                $q->withCategory($this->category);
+            })
+            ->when($this->popular, function ($q) {
+                $q->popular();
+            })
+            ->search($this->search)
             ->orderBy('published_at', $this->sort)
-            ->withSearch($this->search)
-            ->paginate(3);
+            ->paginate(5);
     }
 
     #[Computed()]
     public function activeCategory()
     {
-        if ($this->category === '') {
+        if ($this->category === '' || $this->category === null) {
             return null;
         }
         return Category::where('slug', $this->category)->first();
@@ -63,7 +74,8 @@ class Index extends Component
 
     public function render()
     {
-        return view('livewire.posts.index'
+        return view(
+            'livewire.posts.index'
         );
     }
 }
