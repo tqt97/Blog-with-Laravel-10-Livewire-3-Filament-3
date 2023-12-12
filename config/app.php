@@ -97,6 +97,16 @@ return [
     */
 
     'fallback_locale' => 'en',
+    'supported_locales' => [
+        'en'=>[
+            'name' => 'English',
+            'icon' => 'en'
+        ],
+        'vi'=>[
+            'name' => 'Tiếng Việt',
+            'icon' => 'vi'
+        ]
+    ],
 
     /*
     |--------------------------------------------------------------------------
