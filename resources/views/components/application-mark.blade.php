@@ -7,5 +7,5 @@
         fill="#6875F5" />
 </svg> --}}
 <div class="text-gray-800 font-semibold">
-    <span class="text-yellow-500 text-2xl">&lt;Tuantq&gt;</span>
+    <span class="text-yellow-500 text-2xl">&lt;/&gt;</span>
 </div>
